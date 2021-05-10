@@ -28,10 +28,10 @@ private MockMvc mock;
 	private final MandjeController mandjeController;
 	private final VoorstellingRepository voorstellingRepository;
 
-public MandjeControllerTest(MandjeController mandjeController, VoorstellingRepository voorstellingRepository) {
+public MandjeControllerTest(MandjeController mandjeController, VoorstellingRepository voorstellingRepository, MockMvc mock) {
 	this.mandjeController = mandjeController;
 	this.voorstellingRepository = voorstellingRepository;
-	this.mock= MockMvcBuilders.standaloneSetup(mandjeController).build();
+	this.mock=mock;
 }
 @Test
 void addbestelling() throws Exception {
@@ -45,6 +45,7 @@ void addbestelling() throws Exception {
 	@Test
 	void addDubbeleBestelling(){
 		try{
+			mock.perform(get("/mandje/1/4")).andExpect(status().isOk());
 			assertThat(mandjeController.add(2,4)).isTrue();
 			assertThat(mandjeController.add(2,4)).isTrue();}
 		catch (Exception exception){

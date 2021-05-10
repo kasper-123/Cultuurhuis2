@@ -7,6 +7,7 @@ import be.vdab.cultuurhuis.repositories.VoorstellingRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,17 +28,17 @@ public class MandjeController implements Serializable {
 		}
 @GetMapping
 public ModelAndView getMandje() throws Exception {
-			Map<Voorstelling,Integer> mandjeSet=new TreeMap<>();
+			Map<Voorstelling,Integer> Set=new TreeMap<>();
 			for (var e:mandje.getMandje().entrySet()) {
 				try {
-					mandjeSet.put(voorstellingRepository.findById(e.getKey()).get(), e.getValue());
+			Set.put(voorstellingRepository.findById(e.getKey()).get(), e.getValue());
 				}catch (Exception ex){
 					throw new Exception(ex);
 				}
 			}
 			return new ModelAndView("mandje","mandje",mandje.getMandje());
 }
-@GetMapping("/{id}/{aantal}")
+@PostMapping("/{id}/{aantal}")
 boolean add(@PathVariable long id ,@PathVariable int aantal){
 			try {
 				mandje.add(id, aantal);
@@ -45,5 +46,22 @@ boolean add(@PathVariable long id ,@PathVariable int aantal){
 			}catch (VoorstellingNietGevondenException ex){
 				throw new VoorstellingNietGevondenException();
 			}
-		}
 }
+
+
+@GetMapping("/{id}/{aantal}")
+boolean setMandje(@PathVariable long id ,@PathVariable int aantal) throws Exception{
+	try {
+	if(mandje.getMandje().containsKey(id)==true){
+			Mandje nieuw= new Mandje();
+		nieuw.add(1,2);
+			nieuw.setAankoopMandje(1,2);
+			return true;
+		}
+	}catch (VoorstellingNietGevondenException ex){
+		throw new VoorstellingNietGevondenException();
+	} catch (Exception exception) {
+		exception.printStackTrace();
+	}
+return false;}
+		}

@@ -29,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class KlantControllerTest extends AbstractTransactionalJUnit4SpringContextTests {
     private final MockMvc mvc;
+
 private Klant klant;
 private Reservatie reservatie;
 private Voorstelling voorstelling;
@@ -69,7 +70,7 @@ void KlantLezenOnbestaand2() throws Exception{
 
 @Test
 void KantLezenOnbestaandNULL() throws Exception{
-    mvc.perform(get("/klanten/(null);"));
+    mvc.perform(get("/klanten/(null)"));
     }
 
     @Test
@@ -84,15 +85,26 @@ void KantLezenOnbestaandNULL() throws Exception{
     
     @Test
 void maakNieuweKlant() throws Exception {
-     mvc.perform(post("/klanten").content(
-        asJsonString(klant)).contentType(MediaType.APPLICATION_JSON)
+    var k=new Klant("iho","io","hu",11,9000,"ge","Adqqqqd","dds");
+    
+        mvc.perform(post("/klanten").content(
+        asJsonString(k)).contentType(MediaType.APPLICATION_JSON)
                                           .accept(MediaType.APPLICATION_JSON)
 	).andExpect(status().isCreated());
     
     }
+
 @Test
+void getUserFout() throws Exception {
+    mvc.perform(get("/klanten/{id}",-2)).andExpect(status().isNotFound())	;
+    mvc.perform(get("/klanten/{id}",1000)).andExpect(status().isNotFound())	;
+    
+}
+    
+    @Test
 void maakNieuweKlantNULL() throws Exception {
-    mvc.perform(post("/klanten", (Object) null)).andExpect(status().isBadRequest());
+    mvc.perform(post("/klanten", (Object) null))
+            .andExpect(status().isBadRequest());
 }
 
 public static String asJsonString(final Object obj) {

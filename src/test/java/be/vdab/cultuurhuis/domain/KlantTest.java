@@ -23,6 +23,7 @@ import java.time.LocalDate;
 @DataJpaTest
 public class KlantTest extends AbstractTransactionalJUnit4SpringContextTests {
 private Validator validator;
+
 private Klant klant;
 private Reservatie reservatie;
 private Voorstelling voorstelling;

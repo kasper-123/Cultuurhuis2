@@ -17,11 +17,13 @@ public Mandje getMandje() {
 }
 @Test
 void nieuwMandjeisLeeg() throws Exception {
-	assertThatNullPointerException().isThrownBy(()->mandje.getMandje());
+	assertThat(mandje.getMandje().size()).isZero();
 }
 @Test void nadatJeEenItemInHetMandjeLegtBevatDitMandjeEnkelDitItem() throws Exception {
-	mandje.add(1L,3);
-	assertThat(mandje.getMandje().size()).isEqualTo(1); }
+	mandje.getMandje().put(1L,3);
+	assertThat(mandje.getMandje().size()).isEqualTo(1);
+
+}
 
 @Test void kanGeen2DezelfdeItemsToevoegen() throws Exception {
 	mandje.add(1L,3);

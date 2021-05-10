@@ -1,12 +1,12 @@
 package be.vdab.cultuurhuis.dto;
+import be.vdab.cultuurhuis.domain.Klant;
 import com.fasterxml.jackson.annotation.JsonProperty;
 public class Data {
-@JsonProperty("id")
-private long id;
-@JsonProperty("first_name")
-private String firstName;
-@JsonProperty("last_name")
-private String lastName;
+
+@JsonProperty("voorNaam")
+private String voornaam;
+@JsonProperty("familieNaam")
+private String familieNaam;
 @JsonProperty("straat")
 private String straat;
 @JsonProperty("huisnr")
@@ -23,16 +23,12 @@ public String getGebruikersnaam() {
 @JsonProperty("gebruikersnaam")
 private String gebruikersnaam;
 
-public long getId() {
-	return id;
+public String getVoornaam() {
+	return voornaam;
 }
 
-public String getFirstName() {
-	return firstName;
-}
-
-public String getLastName() {
-	return lastName;
+public String getFamilieNaam() {
+	return familieNaam;
 }
 
 public String getStraat() {
@@ -50,4 +46,6 @@ public int getPostcode() {
 public String getGemeente() {
 	return gemeente;
 }
+
+
 }

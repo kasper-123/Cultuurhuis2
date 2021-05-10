@@ -1,14 +1,15 @@
 package be.vdab.cultuurhuis.restclients;
 
 import be.vdab.cultuurhuis.domain.Klant;
+import be.vdab.cultuurhuis.domain.Voorstelling;
 import be.vdab.cultuurhuis.dto.User;
 
 import java.util.Optional;
 
 public interface UserClient {
 	
-	Optional<User>findById(long id);
-	
-	
+public	Optional<Klant>findById(long id);
+
+public Optional<Voorstelling>getdataVoostellingen(long id);
 	
 }

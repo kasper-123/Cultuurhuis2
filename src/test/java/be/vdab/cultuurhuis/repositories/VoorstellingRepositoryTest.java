@@ -1,5 +1,6 @@
 package be.vdab.cultuurhuis.repositories;
 
+import be.vdab.cultuurhuis.domain.Voorstelling;
 import be.vdab.cultuurhuis.exceptions.VoorstellingNietGevondenException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,28 +24,60 @@ public VoorstellingRepositoryTest(VoorstellingRepository voorstellingRepository)
 
 
 @Test
-void verlaaagvooorstelloing() throws VoorstellingNietGevondenException {
+void verlaaagvooorstelling() throws VoorstellingNietGevondenException {
 	try {
-		var x = voorstellingRepository.findById(2L).get();
+		Voorstelling x;
+		x = voorstellingRepository.findById(2L).get();
 		System.out.println(x.getTitel() + "   " + x.getVrijeplaatsen());
-		assertThat(voorstellingRepository.boeking(2L, 4)).isEqualTo(1);
-		System.out.println("plek  :" + voorstellingRepository.findById(2l).get().getVrijeplaatsen());
-		System.out.println(voorstellingRepository.boeking(2L, 5));
-		System.out.println(voorstellingRepository.findById(x.getId()).get().getVrijeplaatsen());
-		var y = voorstellingRepository.findById(2L).get().getVrijeplaatsen();
-		assertThat(x.getVrijeplaatsen()).isGreaterThan(y);
+	var y=	voorstellingRepository.findById(2L).get();
+			y.verminderVrijePlaatsen(4);
+		voorstellingRepository.save(y);
+		voorstellingRepository.flush();
+		
+		assertThat(x.getVrijeplaatsen()).isGreaterThan(y.getVrijeplaatsen());
+
+	} catch (VoorstellingNietGevondenException ex) {
+		System.out.println(" voorstelling niet gevonden " +ex);
+		throw new VoorstellingNietGevondenException();
+	}
+	
+	try{
+		var z=voorstellingRepository.findById(6L).get();
+		System.out.println(z.getTitel() + "   " + z.getVrijeplaatsen());
+		var y=	voorstellingRepository.findById(2l).get();
+		y.verminderVrijePlaatsen(4);;
+		voorstellingRepository.save(y);
+		voorstellingRepository.flush();
+		assertThat(z.getVrijeplaatsen()).isGreaterThan(y.getVrijeplaatsen()	);
+		
 	} catch (VoorstellingNietGevondenException ex) {
 		System.out.println(ex);
 	}
+	}
+
+
+@Test
+void weBoekn10plaatsen(){
+var x=	voorstellingRepository.findById(3l).get();
+var	v= voorstellingRepository.findById(3l).get();
+	v.verminderVrijePlaatsen(10);
+	assertThat(v.getVrijeplaatsen()).isGreaterThan(x.getVrijeplaatsen());
 }
+
 
 
 @Test
 void verlagenMetNIETteveelreservaties(){
 
-var	x =voorstellingRepository.findById(2l).get().getVrijeplaatsen();
-voorstellingRepository.boeking(2L,10);
-	assertThat(voorstellingRepository.findById(2l).get().getVrijeplaatsen()).isLessThan(x);
+var	x  =voorstellingRepository.getOne(2l);
+	System.out.println( x.getVrijeplaatsen());
+	System.out.println( x.verminderVrijePlaatsen(2));
+	System.out.println( x.getVrijeplaatsen());
+	
+	voorstellingRepository.save(x);
+	voorstellingRepository.flush();
+	System.out.println(x);
+
 }
 
 @Test
@@ -52,8 +85,8 @@ void verlagenMetNullofMinder() {
 	int x = -3;
 	try {
 		var voorstelling = voorstellingRepository.findById(2l).get();
-	
-		voorstellingRepository.boeking(2l,-20);
+	var y=voorstellingRepository.findById(4L).get();
+	y.verminderVrijePlaatsen(x);
 		assertThat(voorstellingRepository.findById(2L).get().getVrijeplaatsen()==voorstelling.getVrijeplaatsen());
 		
 	} catch (IllegalArgumentException | ConstraintViolationException ex) {

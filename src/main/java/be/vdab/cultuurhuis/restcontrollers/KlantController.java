@@ -4,17 +4,24 @@ package be.vdab.cultuurhuis.restcontrollers;
 import be.vdab.cultuurhuis.domain.Klant;
 import be.vdab.cultuurhuis.domain.Reservatie;
 import be.vdab.cultuurhuis.exceptions.KlantNietGevondenException;
+import be.vdab.cultuurhuis.exceptions.KlantNietgemaaktException;
+import be.vdab.cultuurhuis.forms.NieuweKlantForm;
 import be.vdab.cultuurhuis.services.KlantService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.hateoas.server.TypedEntityLinks;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +34,7 @@ import java.util.stream.Collectors;
 @ExposesResourceFor(Klant.class)
 
 public class KlantController {
+private final Logger logger = LoggerFactory.getLogger(this.getClass());
 private final KlantService klantService;
 private final TypedEntityLinks.ExtendedTypedEntityLinks<Klant> links;
 
@@ -41,25 +49,37 @@ private final TypedEntityLinks.ExtendedTypedEntityLinks<Klant> links;
         return klantService.findById(id).map(klant ->
                 EntityModel.of(new KlantInfo(klant))).orElseThrow(KlantNietGevondenException::new);
     }
+@GetMapping("klantform")
+public EntityModel<Klant> Registratie(){
+        return EntityModel.of(new Klant("","","",0,0,"","",""));
 
+}
 
     @PostMapping
    @ResponseStatus(HttpStatus.CREATED)
-    HttpHeaders create(@RequestBody @Valid Klant klant){
-klantService.create(klant);
-var headers = new HttpHeaders();
-headers.setLocation(links.linkToItemResource(klant).toUri());
-return headers;
+   HttpHeaders create(@RequestBody @Valid NieuweKlantForm klant) {
+    if(klant.getPaswoord().equals(klant.getPaswoord2())){
+        var k=new Klant(klant.getVoorNaam(), klant.getFamilieNaam(),
+                klant.getStraat(), klant.getHuisNr(), klant.getPostCode(),
+                klant.getGemeente(),  klant.getGebruikersnaam(), klant.getPaswoord() );
+    
+        klantService.create(k);
+        var headers = new HttpHeaders();
+        headers.setLocation(links.linkToItemResource(k).toUri());
+        return headers;
+    
+    
+    }throw new KlantNietgemaaktException();
     }
 
-
-@PostMapping("{id}")
+/**
+@PostMapping("klanten/{id}/")
 @ResponseStatus(HttpStatus.CREATED)
 void addReservation(@RequestBody @Valid Reservatie reservatie,@PathVariable long id){
         klantService.boekReservatie(id,reservatie);
 }
 
-
+**/
 
 
 @ExceptionHandler(KlantNietGevondenException.class)

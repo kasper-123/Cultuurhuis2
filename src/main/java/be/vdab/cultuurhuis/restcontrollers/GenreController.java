@@ -6,6 +6,8 @@ import be.vdab.cultuurhuis.exceptions.GenreNietGevondenException;
 import be.vdab.cultuurhuis.services.GenreService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.EntityLinks;
@@ -26,11 +28,13 @@ import java.util.Set;
 public class GenreController {
 private final GenreService genreService;
 private final TypedEntityLinks<Genre>links;
-
+private final Logger logger;
 
     public GenreController(GenreService genreService, EntityLinks links) {
         this.genreService = genreService;
         this.links = links.forType(Genre.class,Genre::getId);
+    
+        logger = LoggerFactory.getLogger(this.getClass());
     }
 
     

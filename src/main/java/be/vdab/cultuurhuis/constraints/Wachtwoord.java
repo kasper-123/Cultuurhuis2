@@ -10,7 +10,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Retention(RUNTIME)
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE,ElementType.FIELD})
-@Constraint(validatedBy = {} )
+@Constraint(validatedBy = wachtwoordValidator.class )
 @TekstVak
 public @interface Wachtwoord {String message() default "{be.vdab.WachtWoord.message}";
 Class<?>[] groups() default {};

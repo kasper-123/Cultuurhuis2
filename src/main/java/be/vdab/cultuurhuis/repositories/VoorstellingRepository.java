@@ -15,7 +15,7 @@ import java.util.List;
 public interface VoorstellingRepository extends JpaRepository<Voorstelling,Long> {
 
     List<Voorstelling> findByGenre(Genre genre);
-    @Modifying
-    @Query(value = "update Voorstelling v set v.vrijeplaatsen = (v.vrijeplaatsen - :aantal) where v.id = :id")
-    int boeking(@Param("id")long id,@Param("aantal") int aantal);
+    //@Modifying
+    //@Query(value = "update Voorstelling v set v.vrijeplaatsen = (v.vrijeplaatsen - :aantal) where v.id = :id")
+   // int boeking(@Param("id")long id,@Param("aantal") int aantal);
 }

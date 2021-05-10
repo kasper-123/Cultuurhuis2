@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface KlantService {
     Optional<Klant> findById(long id);
     Optional<Klant>findBygebruikersNaam(String naam);
-    boolean create(Klant klant);
+//  public  void create(Klant klant, String klantURL);
     boolean boekReservatie(long id, Reservatie reservatie);
-
+public  void create(Klant klant);
 }

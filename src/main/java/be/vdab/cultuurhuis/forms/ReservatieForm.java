@@ -5,9 +5,11 @@ import be.vdab.cultuurhuis.domain.Klant;
 import be.vdab.cultuurhuis.domain.Voorstelling;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 public class ReservatieForm {
-	@Getal
+	@PositiveOrZero
 	int plaatsen;
 	
 	@Valid
@@ -15,4 +17,16 @@ public class ReservatieForm {
 	
 	@Valid
 	Klant klant;
+
+public int getPlaatsen() {
+	return plaatsen;
+}
+
+public Voorstelling getVoorstelling() {
+	return voorstelling;
+}
+
+public Klant getKlant() {
+	return klant;
+}
 }

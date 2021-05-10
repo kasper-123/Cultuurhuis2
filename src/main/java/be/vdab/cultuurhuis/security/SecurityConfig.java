@@ -1,5 +1,6 @@
 package be.vdab.cultuurhuis.security;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -8,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.SpringSecurityCoreVersion;
 
 import javax.sql.DataSource;
-
+@Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final String GAST= "gast";
@@ -33,16 +34,21 @@ protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 			.mvcMatchers("/images/**")
  .mvcMatchers("/css/**")
 		  .mvcMatchers("/js/**");
+	
 }
 
 @Override
 protected void configure(HttpSecurity http) throws Exception {
 	http.formLogin();
 	http.authorizeRequests(requests -> requests
-											   
+	
+	
+	.mvcMatchers("/**").permitAll()
+	.mvcMatchers("/**").hasAnyAuthority(KLANT,GAST)
 			                                   .mvcMatchers("/users").hasAuthority(KLANT)
-	.mvcMatchers("/**").anonymous());
-		//	.mvcMatchers("/**").hasAnyAuthority(KLANT,GAST));
+			);
+			
+	
 	
 	http.logout(logout->logout.logoutSuccessUrl("/"));
 	

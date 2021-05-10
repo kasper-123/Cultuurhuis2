@@ -5,6 +5,7 @@ import be.vdab.cultuurhuis.domain.Klant;
 import be.vdab.cultuurhuis.domain.Reservatie;
 import be.vdab.cultuurhuis.exceptions.KlantNietGevondenException;
 import be.vdab.cultuurhuis.repositories.KlantRepository;
+import be.vdab.cultuurhuis.restclients.UserClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,9 +16,10 @@ import java.util.Optional;
 @Transactional
 public class DefaultKlantService implements KlantService {
     private final KlantRepository klantRepository;
-
-    public DefaultKlantService(KlantRepository klantRepository) {
+private final UserClient userClient;
+    public DefaultKlantService(KlantRepository klantRepository, UserClient userClient) {
         this.klantRepository = klantRepository;
+        this.userClient = userClient;
     }
 
     @Override
@@ -31,18 +33,18 @@ public class DefaultKlantService implements KlantService {
     public Optional<Klant> findBygebruikersNaam(String naam) {
         return klantRepository.findByGebruikersnaam(naam);
     }
-
+/**
     @Override
     @Transactional
-    public boolean create(Klant klant) {
+    public void create(Klant klant,String klantURl) {
         try{
             klantRepository.save(klant);
-        return true;
+   userClient.findById(klant.getId());
         }catch (RuntimeException ex){
             throw  ex;
         }
     }
-
+**/
 @Override
 @Transactional
 public boolean boekReservatie(long id,@Valid Reservatie reservatie) {
@@ -60,6 +62,12 @@ public boolean boekReservatie(long id,@Valid Reservatie reservatie) {
         }else throw new KlantNietGevondenException();
 
         return false;
+}
+
+@Override
+@Transactional
+public void create(@Valid Klant klant) {
+    klantRepository.save(klant);
 }
 
 

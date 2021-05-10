@@ -8,6 +8,7 @@ import be.vdab.cultuurhuis.repositories.VoorstellingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -43,11 +44,13 @@ public class DefaultVoorstellingService implements VoorstellingService {
 
 @Override
 @Transactional
-public boolean createBoeking(long id, int aantal) {
+public boolean createBoeking(@Valid long id,@Valid int aantal) {
     
         
         try {
-            voorstellingRepository.boeking(id,aantal);
+           var x= voorstellingRepository.findById(id).get();
+             x.verminderVrijePlaatsen(aantal);
+       voorstellingRepository.save(x);
             return true;
         } catch (Exception ex) {
             throw new ReservatieNietGemaaktException(ex);

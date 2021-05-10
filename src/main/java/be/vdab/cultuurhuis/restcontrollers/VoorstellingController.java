@@ -2,6 +2,7 @@ package be.vdab.cultuurhuis.restcontrollers;
 
 
 import be.vdab.cultuurhuis.domain.Voorstelling;
+import be.vdab.cultuurhuis.exceptions.GenreNietGevondenException;
 import be.vdab.cultuurhuis.exceptions.VoorstellingNietGevondenException;
 import be.vdab.cultuurhuis.repositories.VoorstellingRepository;
 import be.vdab.cultuurhuis.services.VoorstellingService;
@@ -21,10 +22,7 @@ import java.util.List;
 @CrossOrigin(exposedHeaders = "Location")
 @ExposesResourceFor(Voorstelling.class)
 public class VoorstellingController {
-    //TODO  aantal plaatsen verminderen verminderen met
-// x maar enkel dat en nie onder 0
-// en
-
+  
 
 
     
@@ -54,22 +52,31 @@ List<Voorstelling> findAll(){
     }
     
     
-    /**
-    @PutMapping("{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-   boolean boekinPlaatsen(@RequestBody @Valid Voorstelling voorstelling) throws Exception{
-        if (voorstelling.getVrijeplaatsen() > 20) {
-            voorstellingService.createBoeking(voorstelling);
-            return true;
-        }else throw new VoorstellingRepository().
-    return true;
+    
+    @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
+   boolean boekinPlaatsen(@RequestBody @Valid long voorstellingId, int aantal) throws Exception {
+        if (voorstellingService.findbyid(voorstellingId) != null) {
+            if (voorstellingService.findbyid(voorstellingId).getVrijeplaatsen() >= aantal) {
+                voorstellingService.createBoeking(voorstellingId, aantal);
+                return true;
+            } else throw new IllegalArgumentException("te weinig vrije plaatsen.");
+    
+    
+        } else throw new VoorstellingNietGevondenException();
     }
-**/
+    
 
-    @ExceptionHandler(VoorstellingNietGevondenException.class)
+
+    @ExceptionHandler(GenreNietGevondenException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     void genreNietGevonden(){}
 
+@ExceptionHandler(VoorstellingNietGevondenException.class)
+@ResponseStatus(HttpStatus.NOT_FOUND)
+ void WeinigVrijePlaatsen(VoorstellingNietGevondenException ex){
+    System.out.println(ex);
+}
 
 
 

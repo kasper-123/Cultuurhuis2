@@ -34,7 +34,6 @@ private String  gebruikersnaam;
 private String paswoord;
 
 
-
 /**
 @ElementCollection
 @CollectionTable(name ="reservaties",joinColumns = @JoinColumn(name = "klantid"))
@@ -109,7 +108,7 @@ public boolean equals(Object o) {
 	if (this == o) return true;
 	if (!(o instanceof Klant)) return false;
 	Klant klant = (Klant) o;
-	return id == klant.id && Objects.equals(gebruikersnaam, klant.gebruikersnaam);
+	return Objects.equals(gebruikersnaam, klant.gebruikersnaam);
 }
 
 @Override

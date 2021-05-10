@@ -105,4 +105,36 @@ void findBysIdenVERMINDERD() throws Exception {
     
 }
 
+
+@Test
+void getVoorstelling() throws Exception {
+    
+    mvc.perform(get("/voorstelling/{id}",2)).andExpect(status().isOk())	;
+    System.out.println(mvc.perform(get("/voorstelling/{id}",4)).andExpect(status().isOk()));
+    
+}
+@Test
+void toevoegenVoorstelling() throws Exception {
+    mvc.perform(post("/voorstelling/{id}",5)).andExpect(status().isOk());
+    mvc.perform(post("/voorstelling/{id}",2)).andExpect(status().isOk());
+    
+}
+@Test
+void toevoegenOngeldigeVoorstelling() throws Exception {
+    mvc.perform(post("/voorstelling/{id}",-5)).andExpect(status().isOk());
+    mvc.perform(post("/voorstelling/{id}",200)).andExpect(status().isOk());
+    
+}
+
+
+@Test
+void getVoorstellingFouT() throws Exception {
+    
+    mvc.perform(get("/voorstelling/{id}",-2)).andExpect(status().isBadRequest())	;
+    System.out.println(mvc.perform(get("/voorstelling/{id}",4000)).andExpect(status().isBadRequest()));
+    
+}
+
+
+
 }
