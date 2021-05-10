@@ -101,6 +101,7 @@ private static class GenreVoorstelling{
             }
 
 
+            
     @ExceptionHandler(GenreNietGevondenException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     void genreNietGevonden(){}

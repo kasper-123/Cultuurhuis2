@@ -6,6 +6,6 @@ import be.vdab.cultuurhuis.domain.Reservatie;
 import java.util.List;
 
 public interface ReservatieService {
-    List<Reservatie>FindByKlantId(long id);
-    void create(Reservatie reservatie);
+ 
+    boolean create(Reservatie reservatie);
 }

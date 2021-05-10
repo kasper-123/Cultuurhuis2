@@ -2,6 +2,7 @@ package be.vdab.cultuurhuis.services;
 
 
 import be.vdab.cultuurhuis.domain.Voorstelling;
+import be.vdab.cultuurhuis.exceptions.ReservatieNietGemaaktException;
 import be.vdab.cultuurhuis.exceptions.VoorstellingNietGevondenException;
 import be.vdab.cultuurhuis.repositories.VoorstellingRepository;
 import org.springframework.stereotype.Service;
@@ -37,4 +38,22 @@ public class DefaultVoorstellingService implements VoorstellingService {
     public List<Voorstelling> findAll() {
         return voorstellingRepository.findAll();
     }
+
+
+
+@Override
+@Transactional
+public boolean createBoeking(long id, int aantal) {
+    
+        
+        try {
+            voorstellingRepository.boeking(id,aantal);
+            return true;
+        } catch (Exception ex) {
+            throw new ReservatieNietGemaaktException(ex);
+    
+        }
+
+    
+}
 }

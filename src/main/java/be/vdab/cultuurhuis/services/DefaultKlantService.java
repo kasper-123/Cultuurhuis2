@@ -2,10 +2,13 @@ package be.vdab.cultuurhuis.services;
 
 
 import be.vdab.cultuurhuis.domain.Klant;
+import be.vdab.cultuurhuis.domain.Reservatie;
+import be.vdab.cultuurhuis.exceptions.KlantNietGevondenException;
 import be.vdab.cultuurhuis.repositories.KlantRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @Service
@@ -30,11 +33,34 @@ public class DefaultKlantService implements KlantService {
     }
 
     @Override
-    public void create(Klant klant) {
-        
+    @Transactional
+    public boolean create(Klant klant) {
+        try{
             klantRepository.save(klant);
-        
+        return true;
+        }catch (RuntimeException ex){
+            throw  ex;
+        }
     }
+
+@Override
+@Transactional
+public boolean boekReservatie(long id,@Valid Reservatie reservatie) {
+        
+        if (klantRepository.findById(id).isPresent()){
+             var klant= klantRepository.findById(id).get();
+         
+            try {
+              ;
+                klantRepository.save(klant);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else throw new KlantNietGevondenException();
+
+        return false;
+}
 
 
 }

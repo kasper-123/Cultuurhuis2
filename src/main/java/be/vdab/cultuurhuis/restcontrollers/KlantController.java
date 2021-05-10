@@ -51,14 +51,20 @@ var headers = new HttpHeaders();
 headers.setLocation(links.linkToItemResource(klant).toUri());
 return headers;
     }
-    /**
-@PostMapping("{id})")
+
+
+@PostMapping("{id}")
 @ResponseStatus(HttpStatus.CREATED)
-HttpHeaders addReservatie(@RequestBody @Valid Reservatie reservatie,@PathVariable long id){
-    var klantService.findById(id)). ;
-}**/
+void addReservation(@RequestBody @Valid Reservatie reservatie,@PathVariable long id){
+        klantService.boekReservatie(id,reservatie);
+}
 
 
+
+
+@ExceptionHandler(KlantNietGevondenException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    void onbesstaandeklant(){}
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -68,8 +74,7 @@ HttpHeaders addReservatie(@RequestBody @Valid Reservatie reservatie,@PathVariabl
                 ,FieldError::getDefaultMessage));
     }
 
-
-
+ 
 
 
 
@@ -88,7 +93,6 @@ HttpHeaders addReservatie(@RequestBody @Valid Reservatie reservatie,@PathVariabl
             this.huisNr = klant.getHuisNr();
             this.postCode = klant.getPostCode();
             this.gemeente =klant.getGemeente();
-            this.reservaties=klant.getReservaties();
         }
 
         public String getVoorNaam() {
