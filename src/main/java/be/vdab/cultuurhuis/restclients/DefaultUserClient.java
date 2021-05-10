@@ -4,12 +4,14 @@ import be.vdab.cultuurhuis.domain.Klant;
 import be.vdab.cultuurhuis.dto.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.Optional;
 
 @Component
+@SessionScope
 public class DefaultUserClient implements UserClient {
 
 private final WebClient client;

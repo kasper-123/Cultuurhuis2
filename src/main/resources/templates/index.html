@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<head>
+
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/frontend.css">
+    <title>Voorstellingen</title>
+    <script id="yo"></script>
+</head>
+
+<script src="index.js" defer></script>
+<body>
+hooofdmenu:
+<nav th:replace="fragmenten::hoofdmenu"></nav>
+
+<h1>Voorstellingen</h1>
+
+<nav th:replace="fragmenten::menu"></nav>
+
+
+
+<h2 >Genres</h2>
+<ul id="genres" class="genres">
+</ul>
+
+<table id="genre" hidden>
+    <caption id="genreNaam"></caption>
+
+    <thead>
+    <tr>
+        <th>Datum</th>
+        <th>Titel</th>
+        <th>Uitvoerders</th>
+        <th>Prijs</th>
+        <th>Vrije plaatsen</th>
+        <th>reserveren</th>
+    </tr></thead>
+
+    <tbody id="voorstellingen">
+    <tr>
+
+    </tr>
+    </tbody>
+</table>
+
+
+<div id="technischeFout" hidden class="fout">
+    Technische fout, contacteer helpdesk</div>
+</body>
+</html>
