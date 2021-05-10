@@ -21,4 +21,10 @@ public ModelAndView getUser(@PathVariable long id){
 	client.findById(id).ifPresent(user -> modelAndView.addObject(user));
 	return modelAndView;
 }
+
+
+@GetMapping("{id}/bestellen")
+void bestelling(){
+
+}
 }

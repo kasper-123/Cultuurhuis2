@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org"
+       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Inloggen</title>
+    <link rel="stylesheet" th:href="@{/css/security.css}"></link>
+</head>
+<body>
+<h1>Bevestigen</h1>
+
+<h2>Stap 1: Wie ben je?</h2>
+<div sec:authorize="hasAuthority('gast')">
+<form th:action="@{/login}" method="post">
+
+    <label>Gebruikersaam
+        <input name="username" required autofocus placeholder="Gebruikersnaam">
+    </label>
+    <label>Paswoord
+    <input name="password" type="password" required placeholder="Paswoord">
+    </label>
+    <button>Inloggen</button>
+    <div th:if="${param.error}">Verkeerde gebruikersnaam of paswoord</div>
+</form>
+</div>
+<div sec:authorize="hasAuthority('klant')">
+    <b th:text="${klant}"></b>
+</div>
+
+<h1>Stap 2: bevestigen</h1>
+<form>
+    <button th:disabled >Ik ben nieuw</button>
+</form>
+
+<form method="post" th:action="@{/logout}">
+    <button>Uitloggen</button>
+</form>
+</body>
+</html>
